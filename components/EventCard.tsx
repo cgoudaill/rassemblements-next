@@ -2,7 +2,7 @@ import type { RassemblementEvent } from '@/lib/calendar'
 import { formatDate, isGratuit } from '@/lib/calendar'
 
 function cleanTitle(t: string) {
-  return t.replace(/^[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FEFF}\uD83C-\uDBFF\uDC00-\uDFFF\s]+/gu, '').trim()
+  return t.replace(/^[^\w\u00C0-\u024F\s\-\(\)]+\s*/g, '').trim()
 }
 
 const CarSVG = () => (
