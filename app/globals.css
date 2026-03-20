@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Instrument+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #12100e;
+  --paper: #f0ece3;
+  --warm: #e8e0cd;
+  --gold: #9a7520;
+  --gold-lt: #c49a30;
+  --gold-pale: #f2e4b8;
+  --moto: #a03010;
+  --moto-lt: #d04020;
+  --moto-pale: #f5ddd5;
+  --text: #2a2520;
+  --muted: #7a7060;
+  --border: #ccc0a0;
+  --card: #faf7f0;
+  --shadow: rgba(18,16,14,.12);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--warm); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+.leaflet-container { font-family: var(--font-body) !important; }
+.leaflet-popup-content-wrapper {
+  border-radius: 3px !important;
+  box-shadow: 0 4px 20px var(--shadow) !important;
+  border: 1px solid var(--border) !important;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideWidth {
+  from { width: 0; opacity: 0; }
+  to { width: 48px; opacity: 1; }
+}
+
+.animate-fade-up { animation: fadeUp .7s ease backwards; }
+.animate-fade-in { animation: fadeIn .5s ease backwards; }
+.animate-scale-in { animation: scaleIn .3s ease; }
+.font-display { font-family: var(--font-display); }
+
+/* ── Responsive toolbar ── */
+.toolbar-mobile-hidden {
+  display: flex;
+}
+
+@media (max-width: 640px) {
+  .toolbar-mobile-hidden {
+    display: none !important;
+  }
+}

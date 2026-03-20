@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -130 240 260" width="240" height="260">
+  <polygon points="0,-110 95,-55 95,55 0,110 -95,55 -95,-55"
+           fill="none" stroke="#9a7520" stroke-width="2.2"/>
+  <polygon points="0,-98 85,-49 85,49 0,98 -85,49 -85,-49"
+           fill="none" stroke="#9a7520" stroke-width="0.6" stroke-dasharray="3 5"/>
+  <line x1="-65" y1="-66" x2="65" y2="-66" stroke="#9a7520" stroke-width="0.8"/>
+  <line x1="-65" y1="66" x2="65" y2="66" stroke="#9a7520" stroke-width="0.8"/>
+  <polygon points="-82,0 -76,-5 -70,0 -76,5" fill="#9a7520"/>
+  <polygon points="82,0 76,-5 70,0 76,5" fill="#9a7520"/>
+  <line x1="0" y1="-98" x2="0" y2="-86" stroke="#9a7520" stroke-width="0.8"/>
+  <circle cx="0" cy="-82" r="2.5" fill="none" stroke="#9a7520" stroke-width="1"/>
+  <line x1="0" y1="86" x2="0" y2="98" stroke="#9a7520" stroke-width="0.8"/>
+  <circle cx="0" cy="82" r="2.5" fill="none" stroke="#9a7520" stroke-width="1"/>
+  <text y="-34" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#9a7520">WHERE</text>
+  <text y="-14" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#9a7520">DO WE</text>
+  <text y="6" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#9a7520">GO</text>
+  <line x1="-38" y1="18" x2="38" y2="18" stroke="#9a7520" stroke-width="0.8"/>
+  <circle cx="-42" cy="18" r="1.5" fill="#9a7520"/>
+  <circle cx="42" cy="18" r="1.5" fill="#9a7520"/>
+  <text y="32" text-anchor="middle" font-family="Georgia, serif" font-size="8" letter-spacing="3" fill="#9a7520">OLDTIMERS</text>
+  <text y="46" text-anchor="middle" font-family="Georgia, serif" font-size="8" letter-spacing="3" fill="#9a7520">CLASSIC BIKES</text>
+  <text y="60" text-anchor="middle" font-family="Georgia, serif" font-size="7.5" letter-spacing="4" fill="#a03010">· 2026 ·</text>
+</svg>
