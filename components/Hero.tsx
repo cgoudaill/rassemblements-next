@@ -38,6 +38,7 @@ export default function Hero({ stats }: Props) {
           .hero-stats-mobile { display: flex !important; }
           .hero-content { padding: 1.2rem 1.2rem 1.5rem !important; }
           .hero-subtitle { display: none !important; }
+          .hero-logo { width: 90px !important; height: 90px !important; }
         }
         @media (min-width: 601px) {
           .hero-stats-mobile { display: none !important; }
@@ -111,12 +112,13 @@ export default function Hero({ stats }: Props) {
             <img
               src="/logo.svg"
               alt="Where Do We Go"
+              className="hero-logo"
               style={{
-                width: '300px',
-                height: '300px',
+                width: 'clamp(160px, 22vw, 280px)',
+                height: 'clamp(160px, 22vw, 280px)',
                 flexShrink: 0,
                 opacity: 1,
-                filter: 'drop-shadow(0 2px 12px rgba(0,0,0,.6)) brightness(1.15)',
+                filter: 'drop-shadow(0 2px 20px rgba(0,0,0,.8)) brightness(1.25)',
               }}
             />
             <div>
