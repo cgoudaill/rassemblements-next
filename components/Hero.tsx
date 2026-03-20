@@ -99,44 +99,51 @@ export default function Hero({ stats }: Props) {
           flexDirection: 'column',
           justifyContent: 'flex-end',
         }}>
-          {/* Logo */}
-          <img
-            src="/logo.svg"
-            alt="Where Do We Go"
-            style={{
-              width: 90,
-              height: 'auto',
-              marginBottom: '1rem',
-              opacity: 1,
-              animation: 'fadeUp .7s .05s backwards',
-              filter: 'drop-shadow(0 2px 12px rgba(0,0,0,.6)) brightness(1.15)',
-            }}
-          />
-          <p style={{
-            fontSize: '.62rem', letterSpacing: '.3em',
-            textTransform: 'uppercase', color: '#c49a30',
-            marginBottom: '.6rem',
-            animation: 'fadeUp .7s .15s backwards',
+          {/* Logo + Titre côte à côte */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.2rem',
+            marginBottom: '.75rem',
+            animation: 'fadeUp .7s .05s backwards',
           }}>
-            Belgique &amp; environs · 2026
-          </p>
-
-          <h1 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1.7rem, 5vw, 3.2rem)',
-            fontWeight: 300,
-            color: '#f0ece3',
-            lineHeight: 1.05,
-            animation: 'fadeUp .7s .3s backwards',
-          }}>
-            Where Do We Go<br />
-            <em style={{ fontStyle: 'italic', color: '#c49a30' }}>Oldtimers &amp; Classic Bikes 2026</em>
-          </h1>
+            <img
+              src="/logo.svg"
+              alt="Where Do We Go"
+              style={{
+                width: 90,
+                height: 90,
+                flexShrink: 0,
+                opacity: 1,
+                filter: 'drop-shadow(0 2px 12px rgba(0,0,0,.6)) brightness(1.15)',
+              }}
+            />
+            <div>
+              <p style={{
+                fontSize: '.62rem', letterSpacing: '.3em',
+                textTransform: 'uppercase', color: '#c49a30',
+                marginBottom: '.4rem', margin: '0 0 .4rem',
+              }}>
+                Belgique &amp; environs
+              </p>
+              <h1 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.5rem, 4.5vw, 2.8rem)',
+                fontWeight: 300,
+                color: '#f0ece3',
+                lineHeight: 1.05,
+                margin: 0,
+              }}>
+                Where Do We Go<br />
+                <em style={{ fontStyle: 'italic', color: '#c49a30', fontSize: '75%' }}>Rassemblements d'ancêtres &amp; sorties moto</em>
+              </h1>
+            </div>
+          </div>
 
           <div style={{
             width: 48, height: 1,
             background: '#c49a30',
-            margin: '.85rem 0',
+            margin: '.6rem 0',
             animation: 'slideWidth .7s .45s backwards',
           }} />
 
@@ -145,7 +152,7 @@ export default function Hero({ stats }: Props) {
             letterSpacing: '.1em',
             animation: 'fadeUp .7s .55s backwards',
           }}>
-            Voitures classiques &amp; Motos historiques · Compilé par Cédric Goudaillier
+            Voitures de collection &amp; balades moto organisées · Compilé par Cédric Goudaillier
           </p>
 
           {/* Stats mobile — inline sous le titre */}

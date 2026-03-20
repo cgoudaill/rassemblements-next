@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     shortcut: '/logo.svg',
     apple: '/logo.svg',
   },
-  title: 'Where Do We Go — Oldtimers & Classic Bikes 2026 | Belgique',
-  description: 'Agenda complet des rassemblements, balades et rallyes de voitures et motos anciennes en Belgique 2026. Oldtimers & Classic Bikes — Compilé par Cédric Goudaillier.',
+  title: 'Where Do We Go — Rassemblements d\'ancêtres & sorties moto | Belgique',
+  description: 'Agenda complet des rassemblements de voitures anciennes et des balades moto organisées en Belgique. Ancêtres & sorties moto — Compilé par Cédric Goudaillier.',
   authors: [{ name: 'Cédric Goudaillier' }],
   keywords: ['rassemblement voitures anciennes Belgique 2026', 'oldtimer Belgique', 'balade moto ancêtres', 'Cédric Goudaillier'],
   openGraph: {
-    title: 'Where Do We Go — Oldtimers & Classic Bikes 2026',
-    description: 'Agenda oldtimers & classic bikes en Belgique 2026',
+    title: 'Where Do We Go — Rassemblements d\'ancêtres & sorties moto',
+    description: 'Agenda ancêtres & balades moto organisées en Belgique',
     type: 'website',
   },
 }
