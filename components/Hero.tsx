@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react'
 
 const SLIDES = [
-  { url: 'https://images.unsplash.com/photo-1471789477957-6c71b04b28e4?w=1600&q=85&auto=format&fit=crop', label: 'Oldtimer classique' },
-  { url: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1600&q=85&auto=format&fit=crop', label: 'Voiture ancienne' },
-  { url: 'https://images.unsplash.com/photo-1622293150219-1eb476ba3975?w=1600&q=85&auto=format&fit=crop', label: 'Moto ancienne' },
-  { url: 'https://images.unsplash.com/photo-1566008885218-90abf9200ddb?w=1600&q=85&auto=format&fit=crop', label: 'Voiture vintage' },
-  { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=85&auto=format&fit=crop', label: 'Classic car' },
+  { url: '/banner2.jpg', label: 'Roadster bleu' },
+  { url: '/banner1.jpg', label: 'Capot ancêtre' },
+  { url: '/banner3.jpg', label: 'BMW R nineT' },
+  { url: '/banner5.jpg', label: 'Motos en balade' },
+  { url: '/banner6.jpg', label: 'BMW R nineT garage' },
+  { url: '/banner4.jpg', label: 'Détail moto' },
 ]
 
 interface Props {
@@ -42,7 +43,7 @@ export default function Hero({ stats }: Props) {
           .hero-stats-mobile { display: none !important; }
         }
       `}</style>
-      <header style={{ position: 'relative', height: 320, overflow: 'hidden', background: '#12100e' }}>
+      <header style={{ position: 'relative', height: 360, overflow: 'hidden', background: '#12100e' }}>
 
         {/* Background image */}
         <div style={{
@@ -111,8 +112,8 @@ export default function Hero({ stats }: Props) {
               src="/logo.svg"
               alt="Where Do We Go"
               style={{
-                width: 90,
-                height: 90,
+                width: 130,
+                height: 130,
                 flexShrink: 0,
                 opacity: 1,
                 filter: 'drop-shadow(0 2px 12px rgba(0,0,0,.6)) brightness(1.15)',
