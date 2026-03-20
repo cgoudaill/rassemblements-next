@@ -1,6 +1,10 @@
 import type { RassemblementEvent } from '@/lib/calendar'
 import { formatDate, isGratuit } from '@/lib/calendar'
 
+function cleanTitle(t: string) {
+  return t.replace(/^[\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}\p{Extended_Pictographic}\s]+/gu, '').trim()
+}
+
 const CarSVG = () => (
   <svg width="88" height="52" viewBox="0 0 88 52" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M8 34 L18 18 Q20 14 25 14 L63 14 Q68 14 70 18 L80 34 Q83 35 83 38 L83 44 Q83 46 81 46 L74 46 Q72 46 72 44 L72 40 L16 40 L16 44 Q16 46 14 46 L7 46 Q5 46 5 44 L5 38 Q5 35 8 34Z"
@@ -127,7 +131,7 @@ export default function EventCard({ event, index, onClick }: Props) {
           lineHeight: 1.3,
           marginBottom: '.35rem',
         }}>
-          {event.title}
+          {cleanTitle(event.title)}
         </div>
         <div style={{
           fontSize: '.7rem', color: '#7a7060', marginBottom: '.6rem',

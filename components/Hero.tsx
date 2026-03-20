@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react'
 
 const SLIDES = [
-  { url: 'https://images.unsplash.com/photo-1568605533517-1c4b2cfb14e0?w=1600&q=85&auto=format&fit=crop', label: 'Voiture classique' },
-  { url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=85&auto=format&fit=crop', label: 'Porsche classique' },
-  { url: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1600&q=85&auto=format&fit=crop', label: 'Voiture de sport' },
-  { url: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1600&q=85&auto=format&fit=crop', label: 'Oldtimer' },
-  { url: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1600&q=85&auto=format&fit=crop', label: 'Voiture ancienne' },
+  { url: 'https://images.unsplash.com/photo-1471789477957-6c71b04b28e4?w=1600&q=85&auto=format&fit=crop', label: 'Oldtimer classique' },
+  { url: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1600&q=85&auto=format&fit=crop', label: 'Voiture ancienne' },
+  { url: 'https://images.unsplash.com/photo-1622293150219-1eb476ba3975?w=1600&q=85&auto=format&fit=crop', label: 'Moto ancienne' },
+  { url: 'https://images.unsplash.com/photo-1566008885218-90abf9200ddb?w=1600&q=85&auto=format&fit=crop', label: 'Voiture vintage' },
+  { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=85&auto=format&fit=crop', label: 'Classic car' },
 ]
 
 interface Props {
@@ -42,7 +42,7 @@ export default function Hero({ stats }: Props) {
           .hero-stats-mobile { display: none !important; }
         }
       `}</style>
-      <header style={{ position: 'relative', height: 280, overflow: 'hidden', background: '#12100e' }}>
+      <header style={{ position: 'relative', height: 320, overflow: 'hidden', background: '#12100e' }}>
 
         {/* Background image */}
         <div style={{
@@ -104,12 +104,12 @@ export default function Hero({ stats }: Props) {
             src="/logo.svg"
             alt="Where Do We Go"
             style={{
-              width: 72,
+              width: 90,
               height: 'auto',
-              marginBottom: '.8rem',
-              opacity: .92,
+              marginBottom: '1rem',
+              opacity: 1,
               animation: 'fadeUp .7s .05s backwards',
-              filter: 'drop-shadow(0 2px 8px rgba(0,0,0,.4))',
+              filter: 'drop-shadow(0 2px 12px rgba(0,0,0,.6)) brightness(1.15)',
             }}
           />
           <p style={{
