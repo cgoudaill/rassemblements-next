@@ -43,7 +43,7 @@ export default function Hero({ stats }: Props) {
           .hero-stats-mobile { display: none !important; }
         }
       `}</style>
-      <header style={{ position: 'relative', height: 360, overflow: 'hidden', background: '#12100e' }}>
+      <header style={{ position: 'relative', height: 400, overflow: 'hidden', background: '#12100e' }}>
 
         {/* Background image */}
         <div style={{
@@ -112,8 +112,8 @@ export default function Hero({ stats }: Props) {
               src="/logo.svg"
               alt="Where Do We Go"
               style={{
-                width: 130,
-                height: 130,
+                width: '300px',
+                height: '300px',
                 flexShrink: 0,
                 opacity: 1,
                 filter: 'drop-shadow(0 2px 12px rgba(0,0,0,.6)) brightness(1.15)',
