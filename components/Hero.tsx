@@ -17,15 +17,10 @@ interface Props {
 
 export default function Hero({ stats }: Props) {
   const [current, setCurrent] = useState(0)
-  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisible(false)
-      setTimeout(() => {
-        setCurrent(prev => (prev + 1) % SLIDES.length)
-        setVisible(true)
-      }, 600)
+      setCurrent(prev => (prev + 1) % SLIDES.length)
     }, 4500)
     return () => clearInterval(interval)
   }, [])
@@ -33,190 +28,185 @@ export default function Hero({ stats }: Props) {
   return (
     <>
       <style>{`
-        @media (max-width: 600px) {
-          .hero-stats-desktop { display: none !important; }
-          .hero-stats-mobile { display: flex !important; }
-          .hero-content { padding: 1.2rem 1.2rem 1.5rem !important; }
-          .hero-subtitle { display: none !important; }
-          .hero-logo { width: 90px !important; height: 90px !important; }
+        .hero-wrap {
+          position: relative;
+          height: 37vh;
+          min-height: 240px;
+          overflow: hidden;
+          background: #12100e;
         }
-        @media (min-width: 601px) {
-          .hero-stats-mobile { display: none !important; }
+        .hero-slide {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center 40%;
+          opacity: 0;
+          transition: opacity 1.2s ease-in-out;
+        }
+        .hero-slide.active { opacity: 1; }
+        .hero-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top, rgba(18,16,14,.85) 0%, rgba(18,16,14,.25) 55%, transparent 100%);
+          z-index: 1;
+        }
+        .hero-content {
+          position: relative;
+          z-index: 2;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 1.5rem 2.5rem 2rem;
+        }
+        .hero-eyebrow {
+          font-size: .6rem;
+          font-weight: 500;
+          letter-spacing: .35em;
+          text-transform: uppercase;
+          color: #c49a30;
+          margin-bottom: .5rem;
+          display: block;
+        }
+        .hero-logo-title {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: .4rem;
+        }
+        .hero-logo {
+          width: 70px;
+          height: 70px;
+          flex-shrink: 0;
+          filter: drop-shadow(0 2px 12px rgba(0,0,0,.7)) brightness(1.2);
+        }
+        .hero-title {
+          font-family: var(--font-display);
+          font-size: clamp(1.4rem, 3vw, 2.2rem);
+          font-weight: 300;
+          font-style: italic;
+          color: #f0ece3;
+          line-height: 1.1;
+          margin: 0;
+        }
+        .hero-title em {
+          font-size: 68%;
+          color: #c49a30;
+          display: block;
+          margin-top: .15rem;
+          font-style: italic;
+        }
+        .hero-sub {
+          font-size: .65rem;
+          color: rgba(240,236,227,.45);
+          letter-spacing: .07em;
+          margin-top: .35rem;
+        }
+        .hero-dots {
+          position: absolute;
+          bottom: .9rem;
+          right: 2rem;
+          z-index: 3;
+          display: flex;
+          gap: .4rem;
+        }
+        .hero-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: rgba(240,236,227,.28);
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          transition: background .3s, transform .3s;
+        }
+        .hero-dot.active {
+          background: #c49a30;
+          transform: scale(1.35);
+        }
+        .hero-stats {
+          position: absolute;
+          bottom: 1rem;
+          left: 2.5rem;
+          z-index: 3;
+          display: flex;
+          gap: 1.5rem;
+        }
+        .hero-stat-n {
+          font-family: var(--font-display);
+          font-size: 1.4rem;
+          font-weight: 300;
+          line-height: 1;
+          color: #f0ece3;
+        }
+        .hero-stat-n.moto { color: #d04020; }
+        .hero-stat-l {
+          font-size: .5rem;
+          text-transform: uppercase;
+          letter-spacing: .12em;
+          color: rgba(240,236,227,.38);
+          margin-top: .1rem;
+        }
+        @media (max-width: 600px) {
+          .hero-content { padding: 1rem 1.2rem 1.4rem; }
+          .hero-title { font-size: 1.3rem; }
+          .hero-logo { width: 48px !important; height: 48px !important; }
+          .hero-sub { display: none; }
+          .hero-stats { display: none; }
+          .hero-eyebrow { display: none; }
         }
       `}</style>
-      <header style={{ position: 'relative', height: 400, overflow: 'hidden', background: '#12100e' }}>
 
-        {/* Background image */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `url('${SLIDES[current].url}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: visible ? .42 : 0,
-          transition: 'opacity .8s ease',
-        }} />
+      <header className="hero-wrap">
 
-        {/* Gradient vignette */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(12,10,8,.88) 0%, rgba(12,10,8,.2) 60%, transparent 100%)',
-        }} />
+        {SLIDES.map((slide, i) => (
+          <div
+            key={i}
+            className={`hero-slide${i === current ? ' active' : ''}`}
+            style={{ backgroundImage: `url('${slide.url}')` }}
+          />
+        ))}
 
-        {/* Grain overlay */}
-        <div style={{
-          position: 'absolute', inset: 0, opacity: .04,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        }} />
+        <div className="hero-overlay" />
 
-        {/* Slide indicator dots */}
-        <div style={{
-          position: 'absolute', bottom: '1.2rem', left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex', gap: '.4rem', zIndex: 2,
-        }}>
+        <div className="hero-content">
+          <span className="hero-eyebrow">Belgique &amp; environs · Printemps 2026</span>
+          <div className="hero-logo-title">
+            <img src="/logo.svg" alt="Where Do We Go" className="hero-logo" />
+            <h1 className="hero-title">
+              Where Do We Go
+              <em>Rassemblements d'ancêtres &amp; sorties moto</em>
+            </h1>
+          </div>
+          <p className="hero-sub">
+            Voitures de collection &amp; balades moto organisées · Compilé par Cédric Goudaillier
+          </p>
+        </div>
+
+        <div className="hero-stats">
+          {[
+            { n: stats.total, l: 'événements', mo: false },
+            { n: stats.cars, l: 'voitures', mo: false },
+            { n: stats.motos, l: 'motos', mo: true },
+            { n: stats.free, l: 'gratuits', mo: false },
+          ].map(({ n, l, mo }) => (
+            <div key={l}>
+              <div className={`hero-stat-n${mo ? ' moto' : ''}`}>{n}</div>
+              <div className="hero-stat-l">{l}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="hero-dots">
           {SLIDES.map((_, i) => (
             <button
               key={i}
+              className={`hero-dot${i === current ? ' active' : ''}`}
               onClick={() => setCurrent(i)}
-              style={{
-                width: i === current ? 20 : 6,
-                height: 6,
-                borderRadius: 3,
-                background: i === current ? '#c49a30' : 'rgba(240,236,227,.3)',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all .3s ease',
-                padding: 0,
-              }}
             />
           ))}
         </div>
 
-        {/* Content */}
-        <div className="hero-content" style={{
-          position: 'relative', zIndex: 2,
-          padding: '2rem 2.5rem 3.5rem',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-        }}>
-          {/* Logo + Titre côte à côte */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1.2rem',
-            marginBottom: '.75rem',
-            animation: 'fadeUp .7s .05s backwards',
-          }}>
-            <img
-              src="/logo.svg"
-              alt="Where Do We Go"
-              className="hero-logo"
-              style={{
-                width: 'clamp(160px, 22vw, 280px)',
-                height: 'clamp(160px, 22vw, 280px)',
-                flexShrink: 0,
-                opacity: 1,
-                filter: 'drop-shadow(0 2px 20px rgba(0,0,0,.8)) brightness(1.25)',
-              }}
-            />
-            <div>
-              <p style={{
-                fontSize: '.62rem', letterSpacing: '.3em',
-                textTransform: 'uppercase', color: '#c49a30',
-                marginBottom: '.4rem', margin: '0 0 .4rem',
-              }}>
-                Belgique &amp; environs
-              </p>
-              <h1 style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.5rem, 4.5vw, 2.8rem)',
-                fontWeight: 300,
-                color: '#f0ece3',
-                lineHeight: 1.05,
-                margin: 0,
-              }}>
-                Where Do We Go<br />
-                <em style={{ fontStyle: 'italic', color: '#c49a30', fontSize: '75%' }}>Rassemblements d'ancêtres &amp; sorties moto</em>
-              </h1>
-            </div>
-          </div>
-
-          <div style={{
-            width: 48, height: 1,
-            background: '#c49a30',
-            margin: '.6rem 0',
-            animation: 'slideWidth .7s .45s backwards',
-          }} />
-
-          <p className="hero-subtitle" style={{
-            fontSize: '.72rem', color: 'rgba(240,236,227,.5)',
-            letterSpacing: '.1em',
-            animation: 'fadeUp .7s .55s backwards',
-          }}>
-            Voitures de collection &amp; balades moto organisées · Compilé par Cédric Goudaillier
-          </p>
-
-          {/* Stats mobile — inline sous le titre */}
-          <div className="hero-stats-mobile" style={{
-            display: 'none',
-            gap: '1.2rem',
-            marginTop: '.5rem',
-            animation: 'fadeUp .7s .65s backwards',
-          }}>
-            {[
-              { n: stats.total, l: 'évts' },
-              { n: stats.cars, l: '🚗' },
-              { n: stats.motos, l: '🏍️', mo: true },
-              { n: stats.free, l: 'gratuits' },
-            ].map(({ n, l, mo }) => (
-              <div key={l} style={{ textAlign: 'center' }}>
-                <div style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '1.4rem',
-                  fontWeight: 300,
-                  lineHeight: 1,
-                  color: (mo as boolean) ? '#d04020' : '#f0ece3',
-                }}>{n}</div>
-                <div style={{
-                  fontSize: '.52rem', textTransform: 'uppercase',
-                  letterSpacing: '.1em', color: 'rgba(240,236,227,.4)',
-                  marginTop: '.1rem',
-                }}>{l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Stats desktop — position absolue en bas à droite */}
-        <div className="hero-stats-desktop" style={{
-          position: 'absolute', bottom: '2rem', right: '2.5rem',
-          zIndex: 2, display: 'flex', gap: '2rem',
-          animation: 'fadeUp .7s .65s backwards',
-        }}>
-          {[
-            { n: stats.total, l: 'événements' },
-            { n: stats.cars, l: '🚗 voitures' },
-            { n: stats.motos, l: '🏍️ motos', mo: true },
-            { n: stats.free, l: 'gratuits' },
-          ].map(({ n, l, mo }) => (
-            <div key={l} style={{ textAlign: 'right' }}>
-              <div style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.9rem',
-                fontWeight: 300,
-                lineHeight: 1,
-                color: (mo as boolean) ? '#d04020' : '#f0ece3',
-              }}>{n}</div>
-              <div style={{
-                fontSize: '.58rem', textTransform: 'uppercase',
-                letterSpacing: '.15em', color: 'rgba(240,236,227,.4)',
-                marginTop: '.1rem',
-              }}>{l}</div>
-            </div>
-          ))}
-        </div>
       </header>
     </>
   )
