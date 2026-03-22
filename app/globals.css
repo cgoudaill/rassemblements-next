@@ -33,7 +33,7 @@ body {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 5px; } /* design v2 */
 ::-webkit-scrollbar-track { background: var(--warm); }
 ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 
