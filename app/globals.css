@@ -3,69 +3,33 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --ink: #12100e;
-  --paper: #fff8f4;
-  --warm: #f3ede9;
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
+  --paper: #f5f0e8;
+  --paper-light: #faf7f2;
+  --ink: #2a2010;
+  --ink-mid: #5a4a30;
+  --ink-muted: #9a8a70;
   --gold: #9a7520;
-  --gold-lt: #c49a30;
-  --gold-pale: #fef3c7;
-  --moto: #a03010;
-  --moto-lt: #d04020;
-  --moto-pale: #ffe4e6;
-  --text: #1d1b19;
-  --muted: #4e4637;
-  --border: #d1c5b2;
-  --card: #faf7f0;
-  --shadow: rgba(29,27,25,.06);
-  --font-display: 'Newsreader', 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Work Sans', 'Instrument Sans', system-ui, sans-serif;
+  --gold-light: #c49a30;
+  --rust: #a03010;
+  --border: #e0d4b8;
 }
 
-html { scroll-behavior: smooth; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
 
 body {
   font-family: var(--font-body);
-  background: var(--paper) /* v2 */;
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; } /* design v2 */
-::-webkit-scrollbar-track { background: var(--warm); }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* Leaflet map fix */
-.leaflet-container { font-family: var(--font-body) !important; }
-.leaflet-popup-content-wrapper {
-  border-radius: 4px !important;
-  box-shadow: 0 4px 20px var(--shadow) !important;
-  border: 1px solid var(--border) !important;
-}
-
-/* Animations */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(.97); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes slideWidth {
-  from { width: 0; opacity: 0; }
-  to { width: 48px; opacity: 1; }
-}
-
-.animate-fade-up { animation: fadeUp .7s ease backwards; }
-.animate-fade-in { animation: fadeIn .5s ease backwards; }
-.animate-scale-in { animation: scaleIn .3s ease; }
-
-/* Utility */
-.font-display { font-family: var(--font-display); }

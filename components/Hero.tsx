@@ -1,213 +1,115 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-const SLIDES = [
-  { url: '/banner2.jpg', label: 'Roadster bleu' },
-  { url: '/banner1.jpg', label: 'Capot ancêtre' },
-  { url: '/banner3.jpg', label: 'BMW R nineT' },
-  { url: '/banner5.jpg', label: 'Motos en balade' },
-  { url: '/banner6.jpg', label: 'BMW R nineT garage' },
-  { url: '/banner4.jpg', label: 'Détail moto' },
-]
-
-interface Props {
-  stats: { total: number; cars: number; motos: number; free: number }
+interface Stats {
+  total: number
+  cars: number
+  motos: number
+  free: number
 }
 
-export default function Hero({ stats }: Props) {
+const SLIDES = [
+  '/banner2.jpg',
+  '/banner1.jpg',
+  '/banner3.jpg',
+  '/banner5.jpg',
+  '/banner6.jpg',
+  '/banner4.jpg',
+]
+
+export default function Hero({ stats }: { stats: Stats }) {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent(prev => (prev + 1) % SLIDES.length)
-    }, 4500)
-    return () => clearInterval(interval)
+    const t = setInterval(() => setCurrent(c => (c + 1) % SLIDES.length), 4500)
+    return () => clearInterval(t)
   }, [])
 
   return (
-    <>
+    <section style={{ position: 'relative', height: '58vh', minHeight: 380, overflow: 'hidden' }}>
       <style>{`
-        .hero-wrap {
-          position: relative;
-          height: 37vh;
-          min-height: 240px;
-          overflow: hidden;
-          background: #12100e;
-        }
-        .hero-slide {
-          position: absolute;
-          inset: 0;
-          background-size: cover;
-          background-position: center 40%;
-          opacity: 0;
-          transition: opacity 1.2s ease-in-out;
-        }
-        .hero-slide.active { opacity: 1; }
-        .hero-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(18,16,14,.85) 0%, rgba(18,16,14,.25) 55%, transparent 100%);
-          z-index: 1;
-        }
-        .hero-content {
-          position: relative;
-          z-index: 2;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          padding: 1.5rem 2.5rem 2rem;
-        }
-        .hero-eyebrow {
-          font-size: .6rem;
-          font-weight: 500;
-          letter-spacing: .35em;
-          text-transform: uppercase;
-          color: #c49a30;
-          margin-bottom: .5rem;
-          display: block;
-        }
-        .hero-logo-title {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          margin-bottom: .4rem;
-        }
-        .hero-logo {
-          width: 70px;
-          height: 70px;
-          flex-shrink: 0;
-          filter: drop-shadow(0 2px 12px rgba(0,0,0,.7)) brightness(1.2);
-        }
-        .hero-title {
-          font-family: var(--font-display);
-          font-size: clamp(1.4rem, 3vw, 2.2rem);
-          font-weight: 300;
-          font-style: italic;
-          color: #f0ece3;
-          line-height: 1.1;
-          margin: 0;
-        }
-        .hero-title em {
-          font-size: 68%;
-          color: #c49a30;
-          display: block;
-          margin-top: .15rem;
-          font-style: italic;
-        }
-        .hero-sub {
-          font-size: .65rem;
-          color: rgba(240,236,227,.45);
-          letter-spacing: .07em;
-          margin-top: .35rem;
-        }
-        .hero-dots {
-          position: absolute;
-          bottom: .9rem;
-          right: 2rem;
-          z-index: 3;
-          display: flex;
-          gap: .4rem;
-        }
-        .hero-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: rgba(240,236,227,.28);
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          transition: background .3s, transform .3s;
-        }
-        .hero-dot.active {
-          background: #c49a30;
-          transform: scale(1.35);
-        }
-        .hero-stats {
-          position: absolute;
-          bottom: 1rem;
-          left: 2.5rem;
-          z-index: 3;
-          display: flex;
-          gap: 1.5rem;
-        }
-        .hero-stat-n {
-          font-family: var(--font-display);
-          font-size: 1.4rem;
-          font-weight: 300;
-          line-height: 1;
-          color: #f0ece3;
-        }
-        .hero-stat-n.moto { color: #d04020; }
-        .hero-stat-l {
-          font-size: .5rem;
-          text-transform: uppercase;
-          letter-spacing: .12em;
-          color: rgba(240,236,227,.38);
-          margin-top: .1rem;
-        }
-        @media (max-width: 600px) {
-          .hero-content { padding: 1rem 1.2rem 1.4rem; }
-          .hero-title { font-size: 1.3rem; }
-          .hero-logo { width: 48px !important; height: 48px !important; }
-          .hero-sub { display: none; }
-          .hero-stats { display: none; }
-          .hero-eyebrow { display: none; }
-        }
+        .hs { position: absolute; inset: 0; background-size: cover; background-position: center 35%; opacity: 0; transition: opacity 1.4s ease-in-out; }
+        .hs.on { opacity: 1; }
+        .hero-dot2 { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.55); background: transparent; cursor: pointer; padding: 0; transition: background .3s; }
+        .hero-dot2.on { background: #fff; border-color: #fff; }
       `}</style>
 
-      <header className="hero-wrap">
+      {SLIDES.map((src, i) => (
+        <div key={src} className={`hs${i === current ? ' on' : ''}`}
+          style={{ backgroundImage: `url('${src}')` }} />
+      ))}
 
-        {SLIDES.map((slide, i) => (
-          <div
-            key={i}
-            className={`hero-slide${i === current ? ' active' : ''}`}
-            style={{ backgroundImage: `url('${slide.url}')` }}
-          />
-        ))}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to bottom, rgba(10,8,6,.1) 0%, rgba(10,8,6,.45) 55%, rgba(10,8,6,.82) 100%)',
+      }} />
 
-        <div className="hero-overlay" />
+      <div style={{
+        position: 'relative', zIndex: 2, height: '100%',
+        display: 'flex', flexDirection: 'column',
+        justifyContent: 'flex-end',
+        padding: '0 3.5rem 3.5rem',
+        maxWidth: 900,
+      }}>
+        <span style={{
+          fontSize: '.58rem', fontWeight: 600, letterSpacing: '.42em',
+          textTransform: 'uppercase', color: '#c49a30',
+          marginBottom: '.8rem', display: 'block',
+        }}>
+          Belgique &amp; environs · Printemps 2026
+        </span>
 
-        <div className="hero-content">
-          <span className="hero-eyebrow">Belgique &amp; environs · Printemps 2026</span>
-          <div className="hero-logo-title">
-            <img src="/logo.svg" alt="Where Do We Go" className="hero-logo" />
-            <h1 className="hero-title">
-              Where Do We Go
-              <em>Rassemblements d'ancêtres &amp; sorties moto</em>
-            </h1>
-          </div>
-          <p className="hero-sub">
-            Voitures de collection &amp; balades moto organisées · Compilé par Cédric Goudaillier
-          </p>
-        </div>
+        <h1 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
+          fontWeight: 300, fontStyle: 'italic',
+          color: '#fff', lineHeight: 1.07, margin: '0 0 .6rem',
+          textShadow: '0 2px 24px rgba(0,0,0,.35)',
+        }}>
+          Rassemblements<br />d'ancêtres &amp; sorties moto.
+        </h1>
 
-        <div className="hero-stats">
+        <p style={{
+          fontSize: '.83rem', color: 'rgba(255,255,255,.6)',
+          margin: '0 0 1.8rem', letterSpacing: '.02em', lineHeight: 1.65,
+        }}>
+          Voitures de collection et balades moto organisées en Belgique
+          et dans les environs. Compilé par Cédric Goudaillier.
+        </p>
+
+        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
           {[
-            { n: stats.total, l: 'événements', mo: false },
-            { n: stats.cars, l: 'voitures', mo: false },
-            { n: stats.motos, l: 'motos', mo: true },
-            { n: stats.free, l: 'gratuits', mo: false },
-          ].map(({ n, l, mo }) => (
+            { n: stats.total, l: 'événements' },
+            { n: stats.cars, l: 'voitures' },
+            { n: stats.motos, l: 'motos', accent: true },
+            { n: stats.free, l: 'gratuits' },
+          ].map(({ n, l, accent }) => (
             <div key={l}>
-              <div className={`hero-stat-n${mo ? ' moto' : ''}`}>{n}</div>
-              <div className="hero-stat-l">{l}</div>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.55rem', fontWeight: 300, lineHeight: 1,
+                color: accent ? '#d04020' : '#fff',
+              }}>{n}</div>
+              <div style={{
+                fontSize: '.46rem', textTransform: 'uppercase',
+                letterSpacing: '.15em', color: 'rgba(255,255,255,.38)',
+                marginTop: '.18rem',
+              }}>{l}</div>
             </div>
           ))}
         </div>
+      </div>
 
-        <div className="hero-dots">
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              className={`hero-dot${i === current ? ' active' : ''}`}
-              onClick={() => setCurrent(i)}
-            />
-          ))}
-        </div>
-
-      </header>
-    </>
+      <div style={{
+        position: 'absolute', bottom: '1.5rem', right: '2.5rem',
+        zIndex: 3, display: 'flex', gap: '.45rem',
+      }}>
+        {SLIDES.map((_, i) => (
+          <button key={i} onClick={() => setCurrent(i)}
+            className={`hero-dot2${i === current ? ' on' : ''}`} />
+        ))}
+      </div>
+    </section>
   )
 }
