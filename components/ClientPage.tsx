@@ -25,6 +25,7 @@ export default function ClientPage({ events, updatedAt }: Props) {
   const [sort, setSort] = useState<SortType>('date')
   const [view, setView] = useState<ViewType>('grid')
   const [selected, setSelected] = useState<RassemblementEvent | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const stats = useMemo(() => ({
     total: events.length,
@@ -68,9 +69,122 @@ export default function ClientPage({ events, updatedAt }: Props) {
 
   return (
     <>
+      {/* ── NAV HORIZONTALE ── */}
+      <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 300,
+        background: 'rgba(18,16,14,.97)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(154,117,32,.2)',
+        padding: '0 2rem',
+        height: '3.2rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '1.5rem',
+      }}>
+        {/* Logo + nom */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '.65rem', flexShrink: 0 }}>
+          <img src="/logo.svg" alt="Where Do We Go" style={{ width: 28, height: 28, filter: 'brightness(1.1)' }} />
+          <span style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '.95rem',
+            fontStyle: 'italic',
+            color: '#f0ece3',
+            letterSpacing: '.01em',
+            lineHeight: 1,
+          }}>
+            Where Do We Go
+          </span>
+        </div>
+
+        {/* Liens centre — masqués sur mobile */}
+        <nav style={{
+          display: 'flex',
+          gap: '0',
+          alignItems: 'center',
+        }}>
+          {[
+            { label: '🚗 Voitures', tab: 'car' as TabType },
+            { label: '🏍️ Motos', tab: 'moto' as TabType },
+          ].map(({ label, tab: t }) => (
+            <button
+              key={t}
+              onClick={() => { setTab(tab === t ? 'all' : t); setView('grid') }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: tab === t ? '#c49a30' : 'rgba(240,236,227,.5)',
+                padding: '.3rem 1rem',
+                cursor: 'pointer',
+                fontSize: '.78rem',
+                fontFamily: 'var(--font-body)',
+                fontWeight: tab === t ? 500 : 400,
+                letterSpacing: '.03em',
+                transition: 'color .2s',
+                borderBottom: tab === t ? '2px solid #c49a30' : '2px solid transparent',
+                marginBottom: '-1px',
+              }}
+            >
+              {label}
+            </button>
+          ))}
+          <button
+            onClick={() => setView('map')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: view === 'map' ? '#c49a30' : 'rgba(240,236,227,.5)',
+              padding: '.3rem 1rem',
+              cursor: 'pointer',
+              fontSize: '.78rem',
+              fontFamily: 'var(--font-body)',
+              fontWeight: view === 'map' ? 500 : 400,
+              letterSpacing: '.03em',
+              transition: 'color .2s',
+              borderBottom: view === 'map' ? '2px solid #c49a30' : '2px solid transparent',
+              marginBottom: '-1px',
+            }}
+          >
+            🗺 Carte
+          </button>
+        </nav>
+
+        {/* CTA bouton */}
+        <button
+          onClick={() => {
+            setTab('all')
+            setFilter('all')
+            setView('grid')
+            document.querySelector('main')?.scrollIntoView({ behavior: 'smooth' })
+          }}
+          style={{
+            background: 'linear-gradient(135deg, #9a7520, #a03010)',
+            border: 'none',
+            color: '#f0ece3',
+            padding: '.38rem 1rem',
+            borderRadius: 3,
+            cursor: 'pointer',
+            fontSize: '.73rem',
+            fontFamily: 'var(--font-body)',
+            fontWeight: 500,
+            letterSpacing: '.04em',
+            whiteSpace: 'nowrap',
+            transition: 'opacity .2s',
+            flexShrink: 0,
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '.8')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+        >
+          {stats.total} événements →
+        </button>
+      </header>
+
+      {/* ── HERO ── */}
       <Hero stats={stats} />
 
-      {/* ── TOOLBAR ── */}
+      {/* ── TOOLBAR FILTRES ── */}
       <nav style={{
         background: '#12100e',
         borderBottom: '1px solid rgba(154,117,32,.2)',
@@ -80,7 +194,7 @@ export default function ClientPage({ events, updatedAt }: Props) {
         alignItems: 'center',
         flexWrap: 'wrap',
         position: 'sticky',
-        top: 0,
+        top: '3.2rem',
         zIndex: 200,
       }}>
         {/* Search */}
@@ -198,8 +312,11 @@ export default function ClientPage({ events, updatedAt }: Props) {
       </nav>
 
       {/* ── MAIN ── */}
-      <main style={{ padding: 'clamp(.75rem, 3vw, 1.75rem) clamp(.75rem, 3vw, 2rem)', maxWidth: 1380, margin: '0 auto' }}>
-
+      <main style={{
+        padding: 'clamp(.75rem, 3vw, 1.75rem) clamp(.75rem, 3vw, 2rem)',
+        maxWidth: 1380,
+        margin: '0 auto',
+      }}>
         {/* Results info */}
         <p style={{
           fontSize: '.72rem', color: '#7a7060',
@@ -259,7 +376,7 @@ export default function ClientPage({ events, updatedAt }: Props) {
         <strong style={{ color: '#2a2520', fontWeight: 500 }}>Cédric Goudaillier</strong>
         {' '}· Waterloo, Belgique<br />
         Agenda mis à jour automatiquement · Dernière synchronisation : {updatedAt}<br />
-        Sources : Google Calendar "Rassemblement ancetres" &amp; "Rassemblements motos"
+        Sources : Google Calendar &quot;Rassemblement ancetres&quot; &amp; &quot;Rassemblements motos&quot;
       </footer>
 
       {/* ── MODAL ── */}
