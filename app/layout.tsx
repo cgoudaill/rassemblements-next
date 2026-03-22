@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Instrument_Sans } from 'next/font/google'
+import { Newsreader, Work_Sans } from 'next/font/google'
 import './globals.css'
 
-const cormorant = Cormorant_Garamond({
+const newsreader = Newsreader({
   subsets: ['latin'],
-  weight: ['300', '400', '600'],
+  weight: ['300', '400'],
   style: ['normal', 'italic'],
   variable: '--font-display',
 })
 
-const instrument = Instrument_Sans({
+const workSans = Work_Sans({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['300', '400', '500', '600'],
   variable: '--font-body',
 })
 
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${cormorant.variable} ${instrument.variable}`}>
+    <html lang="fr" className={`${newsreader.variable} ${workSans.variable}`}>
       <body>{children}</body>
     </html>
   )
