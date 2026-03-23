@@ -1,7 +1,7 @@
 import { getAllEvents } from '@/lib/calendar-server'
 import ClientPage from '@/components/ClientPage'
 
-export const revalidate = 21600
+export const revalidate = 300
 
 export default async function Home() {
   const events = await getAllEvents()
