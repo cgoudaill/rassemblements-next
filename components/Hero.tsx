@@ -27,88 +27,112 @@ export default function Hero({ stats }: { stats: Stats }) {
   }, [])
 
   return (
-    <section style={{ position: 'relative', height: '58vh', minHeight: 380, overflow: 'hidden' }}>
+    <section style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      borderBottom: '1px solid var(--rule)',
+      minHeight: 520,
+    }}>
       <style>{`
         .hs { position: absolute; inset: 0; background-size: cover; background-position: center 35%; opacity: 0; transition: opacity 1.4s ease-in-out; }
         .hs.on { opacity: 1; }
-        .hero-dot2 { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.55); background: transparent; cursor: pointer; padding: 0; transition: background .3s; }
-        .hero-dot2.on { background: #fff; border-color: #fff; }
+        @media (max-width: 700px) {
+          .hero-split { grid-template-columns: 1fr !important; }
+          .hero-photo { display: none !important; }
+        }
       `}</style>
 
-      {SLIDES.map((src, i) => (
-        <div key={src} className={`hs${i === current ? ' on' : ''}`}
-          style={{ backgroundImage: `url('${src}')` }} />
-      ))}
-
+      {/* Gauche — texte */}
       <div style={{
-        position: 'absolute', inset: 0,
-        background: 'linear-gradient(to bottom, rgba(10,8,6,.1) 0%, rgba(10,8,6,.45) 55%, rgba(10,8,6,.82) 100%)',
-      }} />
-
-      <div style={{
-        position: 'relative', zIndex: 2, height: '100%',
-        display: 'flex', flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: '0 3.5rem 3.5rem',
-        maxWidth: 900,
+        padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem) clamp(2rem, 4vw, 3rem)',
+        borderRight: '1px solid var(--rule)',
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
       }}>
-        <span style={{
-          fontSize: '.58rem', fontWeight: 600, letterSpacing: '.42em',
-          textTransform: 'uppercase', color: '#c49a30',
-          marginBottom: '.8rem', display: 'block',
-        }}>
-          Belgique &amp; environs · Printemps 2026
-        </span>
+        <div>
+          <p style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '.6rem', letterSpacing: '.28em',
+            textTransform: 'uppercase', color: 'var(--red)',
+            marginBottom: '1.5rem',
+          }}>
+            Belgique &amp; environs · Printemps 2026
+          </p>
 
-        <h1 style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
-          fontWeight: 300, fontStyle: 'italic',
-          color: '#fff', lineHeight: 1.07, margin: '0 0 .6rem',
-          textShadow: '0 2px 24px rgba(0,0,0,.35)',
-        }}>
-          Rassemblements<br />d'ancêtres &amp; sorties moto.
-        </h1>
+          <h1 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.8rem, 5.5vw, 5.5rem)',
+            fontWeight: 900, lineHeight: .95,
+            color: 'var(--ink)',
+            marginBottom: '1.5rem',
+          }}>
+            Rassem-<br />ble&shy;ments<br />
+            <em style={{ fontStyle: 'italic', color: 'var(--red)' }}>&amp; sorties.</em>
+          </h1>
 
-        <p style={{
-          fontSize: '.83rem', color: 'rgba(255,255,255,.6)',
-          margin: '0 0 1.8rem', letterSpacing: '.02em', lineHeight: 1.65,
-        }}>
-          Voitures de collection et balades moto organisées en Belgique
-          et dans les environs. Compilé par Cédric Goudaillier.
-        </p>
+          <p style={{
+            fontSize: '.9rem', color: 'var(--ink-mid)',
+            maxWidth: 420, lineHeight: 1.75,
+            borderLeft: '3px solid var(--red)',
+            paddingLeft: '1rem',
+            marginBottom: '2.5rem',
+          }}>
+            Voitures de collection et balades moto organisées en Belgique
+            et dans les environs. Compilé par Cédric Goudaillier.
+          </p>
+        </div>
 
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+        <div style={{
+          display: 'flex', gap: '2.5rem',
+          borderTop: '1px solid var(--rule)',
+          paddingTop: '1.5rem',
+        }}>
           {[
-            { n: stats.total, l: 'événements' },
-            { n: stats.cars, l: 'voitures' },
-            { n: stats.motos, l: 'motos', accent: true },
-            { n: stats.free, l: 'gratuits' },
+            { n: stats.total, l: 'Événements' },
+            { n: stats.cars,  l: 'Voitures' },
+            { n: stats.motos, l: 'Motos', accent: true },
+            { n: stats.free,  l: 'Gratuits' },
           ].map(({ n, l, accent }) => (
             <div key={l}>
               <div style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: '1.55rem', fontWeight: 300, lineHeight: 1,
-                color: accent ? '#d04020' : '#fff',
+                fontSize: '2.8rem', fontWeight: 700, lineHeight: 1,
+                color: accent ? 'var(--red)' : 'var(--ink)',
               }}>{n}</div>
               <div style={{
-                fontSize: '.46rem', textTransform: 'uppercase',
-                letterSpacing: '.15em', color: 'rgba(255,255,255,.38)',
-                marginTop: '.18rem',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '.52rem', letterSpacing: '.2em',
+                textTransform: 'uppercase', color: 'var(--ink-muted)',
+                marginTop: '.25rem',
               }}>{l}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div style={{
-        position: 'absolute', bottom: '1.5rem', right: '2.5rem',
-        zIndex: 3, display: 'flex', gap: '.45rem',
-      }}>
-        {SLIDES.map((_, i) => (
-          <button key={i} onClick={() => setCurrent(i)}
-            className={`hero-dot2${i === current ? ' on' : ''}`} />
+      {/* Droite — diaporama */}
+      <div className="hero-photo" style={{ position: 'relative', overflow: 'hidden', background: '#111' }}>
+        {SLIDES.map((src, i) => (
+          <div key={src} className={`hs${i === current ? ' on' : ''}`}
+            style={{ backgroundImage: `url('${src}')` }} />
         ))}
+        <div style={{
+          position: 'absolute', bottom: '1.5rem', right: '1.5rem',
+          background: '#fff', padding: '.4rem .75rem',
+          fontFamily: 'var(--font-mono)', fontSize: '.55rem',
+          letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--ink)',
+        }}>
+          Belgique &amp; environs
+        </div>
+        {/* Dots */}
+        <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', display: 'flex', gap: '.4rem' }}>
+          {SLIDES.map((_, i) => (
+            <button key={i} onClick={() => setCurrent(i)} style={{
+              width: 6, height: 6, borderRadius: '50%', border: 'none', padding: 0,
+              background: i === current ? '#fff' : 'rgba(255,255,255,.35)',
+              cursor: 'pointer', transition: 'background .3s',
+            }} />
+          ))}
+        </div>
       </div>
     </section>
   )

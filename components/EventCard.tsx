@@ -5,24 +5,29 @@ function cleanTitle(t: string) {
   return t.replace(/^[^\w\u00C0-\u024F\s\-\(\)]+\s*/g, '').trim()
 }
 
-function getTag(event: RassemblementEvent): { label: string; bg: string; color: string } {
+function getTag(event: RassemblementEvent): { label: string; color: string; border: string } {
   const title = event.title.toLowerCase()
   const desc = (event.description || '').toLowerCase()
   const isCar = event.type === 'car'
 
   if (title.includes('rallye') || title.includes('rally'))
-    return { label: 'Rallye', bg: '#dbeafe', color: '#1e40af' }
+    return { label: 'Rallye',        color: '#1a4aff', border: '#1a4aff' }
   if (title.includes('bourse'))
-    return { label: 'Bourse', bg: '#ede9fe', color: '#5b21b6' }
+    return { label: 'Bourse',        color: '#7b21b6', border: '#7b21b6' }
   if (title.includes('balade') || desc.includes('balade') || desc.includes('roadbook'))
-    return { label: 'Balade', bg: '#dcfce7', color: '#166534' }
+    return { label: 'Balade',        color: '#186a35', border: '#186a35' }
   if (title.includes('randonnée') || title.includes('rando'))
-    return { label: 'Randonnée', bg: '#dcfce7', color: '#166534' }
+    return { label: 'Randonnée',     color: '#186a35', border: '#186a35' }
   if (title.includes('meeting') || title.includes('expo') || title.includes('salon'))
-    return { label: 'Exposition', bg: '#fef9c3', color: '#854d0e' }
+    return { label: 'Exposition',    color: '#854d0e', border: '#854d0e' }
   if (!isCar)
-    return { label: 'Balade moto', bg: '#ffe4e6', color: '#9f1239' }
-  return { label: 'Rassemblement', bg: '#fef3c7', color: '#92400e' }
+    return { label: 'Balade moto',   color: 'var(--red)', border: 'var(--red)' }
+  return   { label: 'Rassemblement', color: 'var(--ink-muted)', border: 'var(--rule)' }
+}
+
+function getDayNumber(dateStr: string): string {
+  const d = new Date(dateStr)
+  return String(d.getDate()).padStart(2, '0')
 }
 
 interface Props {
@@ -35,128 +40,93 @@ export default function EventCard({ event, index, onClick }: Props) {
   const isCar = event.type === 'car'
   const gratuit = isGratuit(event.price)
   const tag = getTag(event)
-  const accentColor = isCar ? '#9a7520' : '#a03010'
+  const day = getDayNumber(event.date)
 
   return (
     <article
       onClick={onClick}
       style={{
-        background: '#faf7f0',
-        borderRadius: 4,
-        overflow: 'hidden',
+        background: '#fff',
+        border: '1px solid var(--rule)',
+        padding: '1.4rem 1.5rem 1.3rem',
         cursor: 'pointer',
-        transition: 'transform .2s, box-shadow .2s',
-        animation: `fadeUp .45s ${Math.min(index * 35, 350)}ms backwards`,
+        transition: 'background .15s',
+        animation: `fadeUp .4s ${Math.min(index * 30, 300)}ms backwards`,
         position: 'relative',
-        borderLeft: `3px solid transparent`,
-        boxShadow: '0 1px 4px rgba(18,16,14,.07)',
+        overflow: 'hidden',
       }}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLElement
-        el.style.transform = 'translateY(-3px)'
-        el.style.boxShadow = '0 8px 28px rgba(18,16,14,.12)'
-        el.style.borderLeftColor = accentColor
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLElement
-        el.style.transform = ''
-        el.style.boxShadow = '0 1px 4px rgba(18,16,14,.07)'
-        el.style.borderLeftColor = 'transparent'
-      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--surface)' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fff' }}
     >
-      {/* Top color stripe */}
+      {/* Chiffre watermark */}
       <div style={{
-        height: 2,
-        background: isCar
-          ? 'linear-gradient(90deg,#9a7520,#c49a30,transparent)'
-          : 'linear-gradient(90deg,#a03010,#d04020,transparent)',
-      }} />
+        position: 'absolute', top: '.8rem', right: '1rem',
+        fontFamily: 'var(--font-display)', fontWeight: 900,
+        fontSize: '4.5rem', lineHeight: 1,
+        color: 'var(--rule)',
+        pointerEvents: 'none', userSelect: 'none',
+        zIndex: 0,
+      }}>{day}</div>
 
-      {/* Body */}
-      <div style={{ padding: '1rem 1.1rem 1rem' }}>
-
-        {/* Meta row */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '.5rem',
-          marginBottom: '.6rem',
-          flexWrap: 'wrap',
-        }}>
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* Type + tag */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem', marginBottom: '.65rem', flexWrap: 'wrap' }}>
           <span style={{
-            fontSize: '.57rem',
-            fontWeight: 700,
-            letterSpacing: '.1em',
-            textTransform: 'uppercase',
-            padding: '.18rem .6rem',
-            borderRadius: 2,
-            background: tag.bg,
+            display: 'inline-flex', alignItems: 'center', gap: '.3rem',
+            fontFamily: 'var(--font-mono)', fontSize: '.54rem',
+            letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--ink-muted)',
+          }}>
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+              background: isCar ? 'var(--ink)' : 'var(--red)',
+            }} />
+            {isCar ? 'Voiture ancienne' : 'Moto'}
+          </span>
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: '.52rem',
+            letterSpacing: '.14em', textTransform: 'uppercase',
+            padding: '.12rem .5rem',
+            border: `1px solid ${tag.border}`,
             color: tag.color,
-          }}>
-            {tag.label}
-          </span>
-          <span style={{
-            fontSize: '.68rem',
-            color: '#7a7060',
-            fontWeight: 500,
-          }}>
-            {formatDate(event.date)}{event.time ? ` · ${event.time}` : ''}
-          </span>
+          }}>{tag.label}</span>
         </div>
 
-        {/* Title */}
-        <div style={{
+        {/* Titre */}
+        <h3 style={{
           fontFamily: 'var(--font-display)',
-          fontSize: '1.1rem',
-          fontWeight: 400,
-          color: '#12100e',
-          lineHeight: 1.25,
-          marginBottom: '.5rem',
-          transition: 'color .2s',
+          fontSize: '1.12rem', fontWeight: 700,
+          color: 'var(--ink)', lineHeight: 1.2,
+          marginBottom: '.7rem',
         }}>
           {cleanTitle(event.title)}
+        </h3>
+
+        {/* Meta */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '.25rem', marginBottom: '.9rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '.4rem', fontSize: '.7rem', color: 'var(--ink-mid)' }}>
+            <span style={{ color: 'var(--ink-muted)', fontSize: '.8rem' }}>📅</span>
+            {formatDate(event.date)}{event.time ? ` · ${event.time}` : ''}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '.4rem', fontSize: '.7rem', color: 'var(--ink-mid)' }}>
+            <span style={{ color: 'var(--ink-muted)', fontSize: '.8rem' }}>📍</span>
+            {event.location} · {event.km} km
+          </div>
         </div>
 
-        {/* Location */}
+        {/* Footer */}
         <div style={{
-          fontSize: '.7rem',
-          color: '#7a7060',
-          marginBottom: '.65rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '.3rem',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          paddingTop: '.8rem', borderTop: '1px solid var(--rule)',
         }}>
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="#9a7060" style={{ flexShrink: 0 }}>
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-          {event.location} · {event.km} km
-        </div>
-
-        {/* Footer row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '.5rem' }}>
           <span style={{
-            fontSize: '.65rem',
-            fontWeight: 600,
-            color: gratuit ? '#166534' : accentColor,
-            background: gratuit ? '#dcfce7' : `rgba(${isCar ? '154,117,32' : '160,48,16'},.08)`,
-            padding: '.15rem .55rem',
-            borderRadius: 2,
-            display: 'inline-block',
+            fontFamily: 'var(--font-mono)', fontSize: '.65rem', letterSpacing: '.05em',
+            color: gratuit ? '#166534' : 'var(--ink)',
           }}>
             {event.price || 'Prix à confirmer'}
           </span>
-          <span style={{
-            fontSize: '.58rem',
-            color: 'rgba(122,112,96,.5)',
-            letterSpacing: '.05em',
-          }}>
-            {isCar ? 'Voiture ancêtre' : 'Moto'}
-          </span>
+          <span style={{ fontSize: '.85rem', color: 'var(--red)', opacity: 0, transition: 'opacity .15s' }}
+            className="card-arrow">→</span>
         </div>
-
       </div>
     </article>
   )

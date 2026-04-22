@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/scrape-events",
-      "schedule": "0 8 * * 2,5"
+      "schedule": "0 8 * * *"
     }
   ]
 }

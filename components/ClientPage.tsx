@@ -62,96 +62,101 @@ export default function ClientPage({ events, updatedAt }: Props) {
 
   const filterCars = filtered.filter(e => e.type === 'car').length
   const filterMotos = filtered.filter(e => e.type === 'moto').length
-
-  const NAV_H = '3.6rem'
+  const NAV_H = '3.8rem'
 
   return (
     <>
       <style>{`
         .nav-link {
           background: none; border: none; border-bottom: 2px solid transparent;
-          color: #5a5040; padding: .3rem .9rem; cursor: pointer;
-          font-size: .8rem; font-family: var(--font-body); font-weight: 400;
-          letter-spacing: .04em; transition: color .2s, border-color .2s;
-          margin-bottom: -1px;
+          color: var(--ink-muted); padding: .3rem .9rem; cursor: pointer;
+          font-size: .75rem; font-family: var(--font-body); font-weight: 400;
+          letter-spacing: .12em; text-transform: uppercase;
+          transition: color .15s, border-color .15s; margin-bottom: -2px;
         }
-        .nav-link:hover { color: #2a2010; }
-        .nav-link.active { color: #9a7520; border-bottom-color: #9a7520; font-weight: 500; }
+        .nav-link:hover { color: var(--ink); }
+        .nav-link.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
+        .nav-link.active-red { color: var(--red); border-bottom-color: var(--red); }
         .cta-btn {
-          background: #9a7520; border: none; color: #fff;
-          padding: .42rem 1.1rem; border-radius: 4px; cursor: pointer;
-          font-size: .75rem; font-family: var(--font-body); font-weight: 500;
-          letter-spacing: .04em; transition: background .2s, transform .1s;
+          background: var(--ink); border: none; color: #fff;
+          padding: .42rem 1.2rem; cursor: pointer;
+          font-size: .72rem; font-family: var(--font-body); font-weight: 500;
+          letter-spacing: .1em; text-transform: uppercase; transition: background .15s;
         }
-        .cta-btn:hover { background: #7a5e18; transform: translateY(-1px); }
+        .cta-btn:hover { background: var(--red); }
         .filter-pill {
-          background: none;
-          border: 1px solid #d4c4a0;
-          color: #7a6a50; padding: .32rem .8rem; border-radius: 20px;
-          cursor: pointer; font-size: .72rem; font-family: var(--font-body);
-          transition: all .2s; white-space: nowrap;
+          background: #fff; border: 1px solid #ccc;
+          color: var(--ink-mid); padding: .28rem .85rem;
+          cursor: pointer; font-size: .7rem; font-family: var(--font-body);
+          transition: all .15s; white-space: nowrap; letter-spacing: .02em;
         }
-        .filter-pill:hover { border-color: #9a7520; color: #9a7520; }
-        .filter-pill.active { background: #9a7520; border-color: #9a7520; color: #fff; font-weight: 500; }
-        .filter-pill.moto.active { background: #a03010; border-color: #a03010; }
+        .filter-pill:hover { border-color: var(--ink); color: var(--ink); }
+        .filter-pill.active { background: var(--ink); border-color: var(--ink); color: #fff; font-weight: 500; }
+        .filter-pill.moto:hover { border-color: var(--red); color: var(--red); }
+        .filter-pill.moto.active { background: var(--red); border-color: var(--red); color: #fff; }
         .search-input {
           width: 100%; background: #fff;
-          border: 1px solid #ddd4c0; color: #2a2010;
-          padding: .5rem 1rem .5rem 2.2rem;
-          border-radius: 4px; font-size: .78rem;
-          font-family: var(--font-body); outline: none;
-          transition: border-color .2s;
+          border: 1px solid #ccc; color: var(--ink);
+          padding: .38rem .9rem .38rem 2rem;
+          font-size: .78rem; font-family: var(--font-body); outline: none;
+          transition: border-color .15s;
         }
-        .search-input:focus { border-color: #9a7520; }
+        .search-input::placeholder { color: #bbb; }
+        .search-input:focus { border-color: var(--ink); }
         .sort-select {
-          background: #fff; border: 1px solid #ddd4c0;
-          color: #5a5040; padding: .42rem .8rem;
-          border-radius: 4px; font-size: .73rem;
-          font-family: var(--font-body); outline: none; cursor: pointer;
+          background: #fff; border: 1px solid #ccc;
+          color: var(--ink-mid); padding: .35rem .7rem;
+          font-size: .73rem; font-family: var(--font-body);
+          outline: none; cursor: pointer;
         }
+        .sort-select:focus { border-color: var(--ink); }
+        .view-btn {
+          border: 1px solid #ccc; background: #fff;
+          color: var(--ink-muted); padding: .35rem .6rem;
+          cursor: pointer; font-size: .85rem; transition: all .15s;
+        }
+        .view-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+        .view-btn:hover:not(.active) { border-color: var(--ink); color: var(--ink); }
+        .card-arrow { opacity: 0; }
+        article:hover .card-arrow { opacity: 1 !important; }
         @media (max-width: 640px) {
           .nav-links { display: none !important; }
-          .hero-stats-row { display: none !important; }
         }
       `}</style>
 
-      {/* ── NAV CLAIRE ── */}
+      {/* ── NAV ── */}
       <header style={{
         position: 'sticky', top: 0, zIndex: 300,
-        background: 'rgba(248,244,236,.97)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid #e0d4b8',
-        padding: '0 2.5rem',
+        background: '#fff',
+        borderBottom: '2px solid var(--ink)',
+        padding: '0 clamp(1rem, 3vw, 3rem)',
         height: NAV_H,
         display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', gap: '1rem',
       }}>
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem', flexShrink: 0 }}>
-          <img src="/logo.svg" alt="Where Do We Go"
-            style={{ width: 30, height: 30 }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '.65rem', flexShrink: 0 }}>
+          <img src="/logo.svg" alt="Where Do We Go" style={{ width: 28, height: 28 }} />
           <div>
             <div style={{
               fontFamily: 'var(--font-display)', fontStyle: 'italic',
-              fontSize: '.95rem', color: '#2a2010', lineHeight: 1,
+              fontSize: '1.1rem', color: 'var(--ink)', lineHeight: 1,
             }}>Where Do We Go</div>
             <div style={{
-              fontSize: '.52rem', letterSpacing: '.18em',
-              textTransform: 'uppercase', color: '#9a7520', lineHeight: 1,
-              marginTop: '.15rem',
+              fontFamily: 'var(--font-mono)', fontSize: '.5rem',
+              letterSpacing: '.25em', textTransform: 'uppercase',
+              color: 'var(--red)', lineHeight: 1, marginTop: '.15rem',
             }}>Belgique &amp; environs</div>
           </div>
         </div>
 
-        {/* Liens centre */}
         <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
           <button className={`nav-link${tab === 'car' ? ' active' : ''}`}
             onClick={() => { setTab(tab === 'car' ? 'all' : 'car'); setView('grid') }}>
-            Voitures anciennes
+            Voitures
           </button>
-          <button className={`nav-link${tab === 'moto' ? ' active' : ''}`}
+          <button className={`nav-link${tab === 'moto' ? ' active-red' : ''}`}
             onClick={() => { setTab(tab === 'moto' ? 'all' : 'moto'); setView('grid') }}>
-            Balades moto
+            Motos
           </button>
           <button className={`nav-link${view === 'map' ? ' active' : ''}`}
             onClick={() => setView('map')}>
@@ -160,7 +165,6 @@ export default function ClientPage({ events, updatedAt }: Props) {
           <button className="nav-link">À propos</button>
         </nav>
 
-        {/* CTA */}
         <button className="cta-btn"
           onClick={() => {
             setTab('all'); setFilter('all'); setView('grid')
@@ -170,68 +174,61 @@ export default function ClientPage({ events, updatedAt }: Props) {
         </button>
       </header>
 
-      {/* ── HERO ── */}
       <Hero stats={stats} />
 
-      {/* ── BARRE FILTRES CLAIRE ── */}
+      {/* ── FILTRES ── */}
       <div style={{
-        background: '#f8f4ec',
-        borderBottom: '1px solid #e0d4b8',
-        padding: '.85rem 2.5rem',
-        position: 'sticky',
-        top: NAV_H,
-        zIndex: 200,
+        background: 'var(--surface)',
+        borderBottom: '1px solid var(--rule)',
+        padding: '.75rem clamp(1rem, 3vw, 3rem)',
+        position: 'sticky', top: NAV_H, zIndex: 200,
+        display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap',
       }}>
-        {/* Ligne 1 : recherche + tri + vue */}
-        <div style={{
-          display: 'flex', gap: '.75rem', alignItems: 'center',
-          marginBottom: '.65rem', flexWrap: 'wrap',
-        }}>
-          <div style={{ flex: 1, minWidth: 200, position: 'relative' }}>
-            <span style={{
-              position: 'absolute', left: '.7rem', top: '50%',
-              transform: 'translateY(-50%)', color: '#9a7520',
-              fontSize: '.9rem', pointerEvents: 'none',
-            }}>⌕</span>
-            <input className="search-input"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Rechercher un événement, une ville..." />
-          </div>
-          <select className="sort-select" value={sort}
-            onChange={e => setSort(e.target.value as SortType)}>
-            <option value="date">Par date</option>
-            <option value="dist">Par distance</option>
-            <option value="price">Par prix</option>
-          </select>
-          {/* Vue */}
-          <div style={{ display: 'flex', gap: 3 }}>
-            {(['grid', 'map'] as ViewType[]).map(v => (
-              <button key={v} onClick={() => setView(v)} style={{
-                background: view === v ? '#9a7520' : '#fff',
-                border: '1px solid ' + (view === v ? '#9a7520' : '#ddd4c0'),
-                color: view === v ? '#fff' : '#7a6a50',
-                padding: '.38rem .55rem', borderRadius: 4,
-                cursor: 'pointer', fontSize: '.85rem', transition: '.2s',
-              }}>{v === 'grid' ? '⊞' : '◉'}</button>
-            ))}
-          </div>
+        {/* Recherche */}
+        <div style={{ flex: 1, minWidth: 180, position: 'relative' }}>
+          <span style={{
+            position: 'absolute', left: '.7rem', top: '50%',
+            transform: 'translateY(-50%)', color: 'var(--ink-muted)',
+            fontSize: '.9rem', pointerEvents: 'none',
+          }}>⌕</span>
+          <input className="search-input" value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Rechercher un événement, une ville…" />
         </div>
 
-        {/* Ligne 2 : pills */}
-        <div style={{ display: 'flex', gap: '.45rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <button className={`filter-pill${tab === 'all' ? ' active' : ''}`}
-            onClick={() => setTab('all')}>Tous</button>
-          <button className={`filter-pill${tab === 'car' ? ' active' : ''}`}
-            onClick={() => setTab(tab === 'car' ? 'all' : 'car')}>🚗 Voitures</button>
-          <button className={`filter-pill moto${tab === 'moto' ? ' active' : ''}`}
-            onClick={() => setTab(tab === 'moto' ? 'all' : 'moto')}>🏍️ Motos</button>
-          <div style={{ width: 1, height: 16, background: '#d4c4a0', margin: '0 .2rem' }} />
-          {(['all', 'gratuit', 'proche', 'avr', 'mai'] as FilterType[]).map(f => (
-            <button key={f} className={`filter-pill${filter === f && f !== 'all' ? ' active' : ''}`}
-              onClick={() => setFilter(f === filter ? 'all' : f)}>
-              {f === 'all' ? 'Tous' : f === 'gratuit' ? 'Gratuits'
-                : f === 'proche' ? '≤ 50 km' : f === 'avr' ? 'Avril' : 'Mai +'}
+        <div style={{ width: 1, height: 20, background: 'var(--rule)' }} />
+
+        {/* Type */}
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.55rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--ink-muted)' }}>Type</span>
+        <button className={`filter-pill${tab === 'all' ? ' active' : ''}`} onClick={() => setTab('all')}>Tous</button>
+        <button className={`filter-pill${tab === 'car' ? ' active' : ''}`} onClick={() => setTab(tab === 'car' ? 'all' : 'car')}>🚗 Voitures</button>
+        <button className={`filter-pill moto${tab === 'moto' ? ' active' : ''}`} onClick={() => setTab(tab === 'moto' ? 'all' : 'moto')}>🏍️ Motos</button>
+
+        <div style={{ width: 1, height: 20, background: 'var(--rule)' }} />
+
+        {/* Filtres */}
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.55rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--ink-muted)' }}>Filtre</span>
+        {(['gratuit', 'proche', 'avr', 'mai'] as FilterType[]).map(f => (
+          <button key={f} className={`filter-pill${filter === f ? ' active' : ''}`}
+            onClick={() => setFilter(f === filter ? 'all' : f)}>
+            {f === 'gratuit' ? '✦ Gratuits' : f === 'proche' ? '≤ 50 km' : f === 'avr' ? 'Avril' : 'Mai +'}
+          </button>
+        ))}
+
+        <div style={{ width: 1, height: 20, background: 'var(--rule)' }} />
+
+        {/* Tri + vue */}
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.55rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--ink-muted)' }}>Trier</span>
+        <select className="sort-select" value={sort} onChange={e => setSort(e.target.value as SortType)}>
+          <option value="date">Par date</option>
+          <option value="dist">Par distance</option>
+          <option value="price">Par prix</option>
+        </select>
+
+        <div style={{ display: 'flex', gap: 3 }}>
+          {(['grid', 'map'] as ViewType[]).map(v => (
+            <button key={v} onClick={() => setView(v)} className={`view-btn${view === v ? ' active' : ''}`}>
+              {v === 'grid' ? '⊞' : '◉'}
             </button>
           ))}
         </div>
@@ -239,16 +236,27 @@ export default function ClientPage({ events, updatedAt }: Props) {
 
       {/* ── MAIN ── */}
       <main style={{
-        padding: 'clamp(.75rem, 3vw, 2rem) clamp(.75rem, 3vw, 2.5rem)',
+        padding: 'clamp(.75rem, 3vw, 2.5rem) clamp(.75rem, 3vw, 3rem)',
         maxWidth: 1400, margin: '0 auto',
       }}>
-        <p style={{
-          fontSize: '.72rem', color: '#9a8a70',
-          marginBottom: '1.4rem', paddingBottom: '.8rem',
-          borderBottom: '1px solid #e0d4b8', letterSpacing: '.04em',
+        <div style={{
+          display: 'flex', alignItems: 'baseline', gap: '.75rem',
+          marginBottom: '2rem', paddingBottom: '1rem',
+          borderBottom: '1px solid var(--rule)',
         }}>
-          {filtered.length} événement{filtered.length > 1 ? 's' : ''} · {filterCars} voiture{filterCars > 1 ? 's' : ''} · {filterMotos} moto{filterMotos > 1 ? 's' : ''}
-        </p>
+          <span style={{
+            fontFamily: 'var(--font-display)', fontStyle: 'italic',
+            fontSize: '1.4rem', color: 'var(--ink)',
+          }}>
+            {filtered.length} événement{filtered.length > 1 ? 's' : ''}
+          </span>
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: '.58rem',
+            letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--ink-muted)',
+          }}>
+            · {filterCars} voiture{filterCars > 1 ? 's' : ''} · {filterMotos} moto{filterMotos > 1 ? 's' : ''}
+          </span>
+        </div>
 
         {view === 'map' && <MapView events={filtered} onSelect={setSelected} />}
 
@@ -256,8 +264,8 @@ export default function ClientPage({ events, updatedAt }: Props) {
           <>
             {filtered.length === 0 && (
               <p style={{
-                textAlign: 'center', padding: '4rem 2rem',
-                color: '#9a8a70', fontFamily: 'var(--font-display)',
+                textAlign: 'center', padding: '5rem 2rem',
+                color: 'var(--ink-muted)', fontFamily: 'var(--font-display)',
                 fontSize: '1.3rem', fontStyle: 'italic',
               }}>
                 Aucun événement ne correspond à votre recherche.
@@ -265,7 +273,7 @@ export default function ClientPage({ events, updatedAt }: Props) {
             )}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(305px, 100%), 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(310px, 100%), 1fr))',
               gap: '1.1rem',
             }}>
               {filtered.map((event, i) => (
@@ -279,16 +287,23 @@ export default function ClientPage({ events, updatedAt }: Props) {
 
       {/* ── FOOTER ── */}
       <footer style={{
-        textAlign: 'center', padding: '2rem',
-        color: '#9a8a70', fontSize: '.68rem',
-        borderTop: '1px solid #e0d4b8', marginTop: '2rem',
-        letterSpacing: '.06em', lineHeight: 1.8,
-        background: '#f8f4ec',
+        borderTop: '2px solid var(--ink)',
+        padding: '2rem clamp(1rem, 3vw, 3rem)',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        marginTop: '3rem', background: 'var(--ink)', flexWrap: 'wrap', gap: '1rem',
       }}>
-        <strong style={{ color: '#5a4a30', fontWeight: 500 }}>Cédric Goudaillier</strong>
-        {' '}· Waterloo, Belgique<br />
-        Agenda mis à jour automatiquement · Dernière synchronisation : {updatedAt}<br />
-        Sources : Google Calendar &quot;Rassemblement ancetres&quot; &amp; &quot;Rassemblements motos&quot;
+        <div style={{
+          fontFamily: 'var(--font-display)', fontStyle: 'italic',
+          fontSize: '1.1rem', color: '#fff',
+        }}>Where Do We Go</div>
+        <div style={{
+          fontFamily: 'var(--font-mono)', fontSize: '.55rem',
+          letterSpacing: '.15em', textTransform: 'uppercase',
+          color: 'rgba(255,255,255,.45)', lineHeight: 1.8, textAlign: 'right',
+        }}>
+          Cédric Goudaillier · Waterloo, Belgique<br />
+          Mis à jour automatiquement · {updatedAt}
+        </div>
       </footer>
 
       {selected && <EventModal event={selected} onClose={() => setSelected(null)} />}
