@@ -72,6 +72,8 @@ const COORDS_DB: Record<string, [number, number]> = {
   'eupen': [50.628, 6.038],
   'écaussinnes': [50.566, 4.166], 'ecaussinnes': [50.566, 4.166],
   'ciney': [50.293, 5.099],
+  'limerlé': [50.171, 5.939], 'limerle': [50.171, 5.939], 'gouvy': [50.187, 5.939],
+  'vresse-sur-semois': [49.870, 4.929], 'vresse': [49.870, 4.929],
 }
 
 // Codes postaux pour départager des homonymes que le nom seul ne distingue pas.
