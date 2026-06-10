@@ -1,17 +1,14 @@
+import { NextResponse } from 'next/server'
 import { google } from 'googleapis'
-import type { RassemblementEvent, EventType } from './calendar'
 
-const WATERLOO: [number, number] = [50.7142, 4.3960]
+export const dynamic = 'force-dynamic'
 
-// IMPORTANT : guessCoords() fait un `loc.includes(key)` avec premier-match.
-// Les clés spécifiques (ex. 'braine-le-comte') DOIVENT précéder les génériques
-// (ex. 'braine'), sinon la générique gagne. Ordre = priorité.
+// ⚠️ Doit rester synchronisé avec lib/calendar-server.ts (même DB, même logique).
+const FALLBACK: [number, number] = [50.5, 4.5]
+
 const COORDS_DB: Record<string, [number, number]> = {
-  // --- Clés spécifiques prioritaires (avant les génériques homonymes) ---
   'braine-le-comte': [50.609, 4.139], 'braine-l\'alleud': [50.683, 4.371],
   'la louvière': [50.476, 4.187], 'la louviere': [50.476, 4.187],
-
-  // --- Base existante ---
   'comblain': [50.481, 5.586], 'flemalle': [50.577, 5.452], 'flémalle': [50.577, 5.452],
   'ath': [50.630, 3.777], 'gesves': [50.388, 5.058], 'mouscron': [50.745, 3.217],
   'gilly': [50.407, 4.462], 'rumes': [50.544, 3.303], 'hondschoote': [50.978, 2.584],
@@ -35,59 +32,36 @@ const COORDS_DB: Record<string, [number, number]> = {
   'bastogne': [50.001, 5.716], 'binche': [50.409, 4.168], 'trooz': [50.570, 5.680],
   'theux': [50.530, 5.820], 'frameries': [50.410, 3.900], 'chimay': [50.046, 4.326],
   'gedinne': [49.986, 4.961], 'blaregnies': [50.395, 3.920],
-
-  // --- Ajouts session 10/06/2026 ---
   'marloie': [50.197, 5.323],
   'visé': [50.738, 5.700], 'vise': [50.738, 5.700],
   'florennes': [50.252, 4.607],
-  'geer': [50.687, 5.190],
-  'wanze': [50.535, 5.211],
-  'hamois': [50.339, 5.150],
+  'geer': [50.687, 5.190], 'wanze': [50.535, 5.211], 'hamois': [50.339, 5.150],
   'couvin': [50.053, 4.494],
   'oignies-en-thiérache': [49.989, 4.793], 'oignies': [49.989, 4.793],
   'momignies': [50.029, 4.169],
   'cognelée': [50.512, 4.892], 'cognelee': [50.512, 4.892],
-  'lesve': [50.358, 4.788],
-  'remouchamps': [50.480, 5.700],
-  'stavelot': [50.395, 5.929],
-  'ronquières': [50.610, 4.225], 'ronquieres': [50.610, 4.225],
-  'tournai': [50.607, 3.389],
+  'lesve': [50.358, 4.788], 'remouchamps': [50.480, 5.700], 'stavelot': [50.395, 5.929],
+  'ronquières': [50.610, 4.225], 'ronquieres': [50.610, 4.225], 'tournai': [50.607, 3.389],
   'honnelles': [50.342, 3.834], 'fayt-le-franc': [50.342, 3.834],
-  'harchies': [50.481, 3.690],
-  'bruxelles': [50.847, 4.353], 'brussel': [50.847, 4.353],
+  'harchies': [50.481, 3.690], 'bruxelles': [50.847, 4.353], 'brussel': [50.847, 4.353],
 }
 
-// Codes postaux pour départager des homonymes que le nom seul ne distingue pas.
-// Vérifié AVANT le matching par nom. Ex. Bellefontaine 5555 (Bièvre) vs 6730 (Gaume).
 const POSTAL_DB: Record<string, [number, number]> = {
   '5555': [49.934, 5.001], // Bellefontaine (Bièvre)
   '6730': [49.702, 5.380], // Bellefontaine (Tintigny, Gaume)
 }
 
-function guessCoords(location: string): [number, number] {
+function guessCoords(location: string): { coords: [number, number]; matchedBy: string } {
   const loc = location.toLowerCase()
-  // 1) Priorité au code postal s'il est présent dans le lieu
   const cp = loc.match(/\b(\d{4})\b/)
-  if (cp && POSTAL_DB[cp[1]]) return POSTAL_DB[cp[1]]
-  // 2) Sinon matching par nom (premier match gagnant, clés spécifiques d'abord)
+  if (cp && POSTAL_DB[cp[1]]) return { coords: POSTAL_DB[cp[1]], matchedBy: `cp:${cp[1]}` }
   for (const [key, coords] of Object.entries(COORDS_DB)) {
-    if (loc.includes(key)) return coords
+    if (loc.includes(key)) return { coords, matchedBy: `name:${key}` }
   }
-  return [50.5, 4.5]
+  return { coords: FALLBACK, matchedBy: 'fallback' }
 }
 
-function distKm(coords: [number, number]): number {
-  const R = 6371
-  const lat1 = WATERLOO[0] * Math.PI / 180
-  const lon1 = WATERLOO[1] * Math.PI / 180
-  const lat2 = coords[0] * Math.PI / 180
-  const lon2 = coords[1] * Math.PI / 180
-  const a = Math.sin((lat2 - lat1) / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1) / 2) ** 2
-  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)))
-}
-
-async function fetchCalendarEvents(calendarId: string, type: EventType): Promise<RassemblementEvent[]> {
+function getCalendar() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -95,47 +69,67 @@ async function fetchCalendarEvents(calendarId: string, type: EventType): Promise
     },
     scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
   })
-  const calendar = google.calendar({ version: 'v3', auth })
+  return google.calendar({ version: 'v3', auth })
+}
+
+async function analyzeCalendar(calendarId: string, label: string) {
+  const calendar = getCalendar()
   const now = new Date()
   const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59)
   const res = await calendar.events.list({
-    calendarId, timeMin: now.toISOString(),
-    timeMax: endOfYear.toISOString(),
+    calendarId, timeMin: now.toISOString(), timeMax: endOfYear.toISOString(),
     singleEvents: true, orderBy: 'startTime', maxResults: 250,
   })
-  const seen = new Set<string>()
-  return (res.data.items || []).filter(e => {
-    if (e.recurringEventId) {
-      if (seen.has(e.recurringEventId)) return false
-      seen.add(e.recurringEventId)
-    }
-    return true
-  }).map(e => {
-    const location = e.location || 'Belgique'
-    const coords = guessCoords(location)
-    const description = e.description || ''
-    const priceMatch = description.match(/Prix\s*:\s*([^\n]+)/i)
-    const price = priceMatch ? priceMatch[1].trim() : 'Non précisé'
+  const items = res.data.items || []
+  return items.map(e => {
+    const hasLocation = Boolean(e.location && e.location.trim())
+    const location = e.location?.trim() || ''
+    const { coords, matchedBy } = guessCoords(location || 'Belgique')
+    const isFallback = coords[0] === FALLBACK[0] && coords[1] === FALLBACK[1]
     return {
+      calendar: label,
       id: e.id || '',
       title: (e.summary || '').replace(/^[🏍️🚗]\s*/, ''),
       date: e.start?.date || e.start?.dateTime?.split('T')[0] || '',
-      time: e.start?.dateTime ? e.start.dateTime.split('T')[1]?.substring(0, 5) : '',
-      location, description: description.replace(/Source\s*:.*$/gim, '').trim(),
-      price, coords, type, gcalLink: e.htmlLink || '', km: distKm(coords),
+      location: hasLocation ? location : null,
+      coords, matchedBy,
+      problem: !hasLocation ? 'missing_location' : isFallback ? 'fallback_coords' : null,
     }
   })
 }
 
-export async function getAllEvents(): Promise<RassemblementEvent[]> {
+export async function GET() {
   try {
-    const [carEvents, motoEvents] = await Promise.all([
-      fetchCalendarEvents(process.env.CALENDAR_VOITURES || '', 'car'),
-      fetchCalendarEvents(process.env.CALENDAR_MOTOS || '', 'moto'),
+    if (!process.env.CALENDAR_VOITURES || !process.env.CALENDAR_MOTOS) {
+      return NextResponse.json({ error: 'Calendar env vars manquantes' }, { status: 500 })
+    }
+    const [cars, motos] = await Promise.all([
+      analyzeCalendar(process.env.CALENDAR_VOITURES, 'voitures'),
+      analyzeCalendar(process.env.CALENDAR_MOTOS, 'motos'),
     ])
-    return [...carEvents, ...motoEvents].sort((a, b) => a.date.localeCompare(b.date))
+    const all = [...cars, ...motos]
+    const problems = all.filter(e => e.problem)
+    const byProblem = {
+      missing_location: problems.filter(e => e.problem === 'missing_location'),
+      fallback_coords: problems.filter(e => e.problem === 'fallback_coords'),
+    }
+    return NextResponse.json({
+      generatedAt: new Date().toISOString(),
+      summary: {
+        total: all.length,
+        ok: all.length - problems.length,
+        problems: problems.length,
+        missing_location: byProblem.missing_location.length,
+        fallback_coords: byProblem.fallback_coords.length,
+      },
+      problems: byProblem,
+      all,
+    }, { headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
-    console.error('Error fetching calendar events:', error)
-    return []
+    console.error('analyze-locations error:', error)
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'unknown' },
+      { status: 500 },
+    )
   }
 }

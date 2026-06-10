@@ -3,3 +3,11 @@ node_modules/
 .env
 .env.local
 *.json.bak
+.vercel
+
+.DS_Store
+.claude/
+new-token-ghitup
+site-ancetre.txt
+sk-ant-*
+next-env.d.ts
