@@ -8,7 +8,7 @@ import EventCard from './EventCard'
 import EventModal from './EventModal'
 import MapView from './MapView'
 
-type FilterType = 'all' | 'gratuit' | 'proche' | 'avr' | 'mai'
+type FilterType = 'all' | 'gratuit' | 'proche' | 'mois'
 type TabType = 'all' | 'car' | 'moto'
 type SortType = 'date' | 'dist' | 'price'
 type ViewType = 'grid' | 'map'
@@ -20,7 +20,7 @@ interface Props {
 
 export default function ClientPage({ events, updatedAt }: Props) {
   const [search, setSearch] = useState('')
-  const [filter, setFilter] = useState<FilterType>('all')
+  const [filter, setFilter] = useState<FilterType>('mois')
   const [tab, setTab] = useState<TabType>('all')
   const [sort, setSort] = useState<SortType>('date')
   const [view, setView] = useState<ViewType>('grid')
