@@ -41,8 +41,6 @@ export default function ClientPage({ events, updatedAt }: Props) {
       let matchFilter = true
       if (filter === 'gratuit') matchFilter = isGratuit(e.price)
       else if (filter === 'proche') matchFilter = e.km <= 50
-      else if (filter === 'avr') matchFilter = e.date.startsWith('2026-04')
-      else if (filter === 'mai') matchFilter = e.date >= '2026-05-01'
       const matchTab = tab === 'all' || e.type === tab
       return matchSearch && matchFilter && matchTab
     })

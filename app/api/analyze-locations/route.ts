@@ -100,7 +100,7 @@ async function analyzeCalendar(calendarId: string, label: string) {
     singleEvents: true, orderBy: 'startTime', maxResults: 250,
   })
   const items = res.data.items || []
-  return items.map(e => {
+  return items.map((e: any) => {
     const hasLocation = Boolean(e.location && e.location.trim())
     const location = e.location?.trim() || ''
     const { coords, matchedBy } = guessCoords(location || 'Belgique')
