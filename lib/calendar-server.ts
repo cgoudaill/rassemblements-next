@@ -123,13 +123,13 @@ async function fetchCalendarEvents(calendarId: string, type: EventType): Promise
     singleEvents: true, orderBy: 'startTime', maxResults: 250,
   })
   const seen = new Set<string>()
-  return (res.data.items || []).filter(e => {
+  return (res.data.items || []).filter((e: any) => {
     if (e.recurringEventId) {
       if (seen.has(e.recurringEventId)) return false
       seen.add(e.recurringEventId)
     }
     return true
-  }).map(e => {
+  }).map((e: any) => {
     const location = e.location || 'Belgique'
     const coords = guessCoords(location)
     const description = e.description || ''

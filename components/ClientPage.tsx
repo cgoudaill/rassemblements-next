@@ -206,7 +206,7 @@ export default function ClientPage({ events, updatedAt }: Props) {
 
         {/* Filtres */}
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.55rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--ink-muted)' }}>Filtre</span>
-        {(['gratuit', 'proche', 'avr', 'mai'] as FilterType[]).map(f => (
+        {(['mois', 'gratuit', 'proche'] as FilterType[]).map(f => (
           <button key={f} className={`filter-pill${filter === f ? ' active' : ''}`}
             onClick={() => setFilter(f === filter ? 'all' : f)}>
             {f === 'mois' ? '📅 Ce mois-ci' : f === 'gratuit' ? '✦ Gratuits' : '≤ 50 km'}
