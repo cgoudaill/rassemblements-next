@@ -56,6 +56,11 @@ const COORDS_DB: Record<string, [number, number]> = {
   'franchimont': [50.197, 4.583],
   'veulen': [50.770, 5.300], 'heers': [50.752, 5.297],
   'attre': [50.585, 3.832],
+  'dinant': [50.262, 4.913],
+  'grâce-hollogne': [50.617, 5.500], 'grace-hollogne': [50.617, 5.500],
+  'eupen': [50.628, 6.038],
+  'écaussinnes': [50.566, 4.166], 'ecaussinnes': [50.566, 4.166],
+  'ciney': [50.293, 5.099],
 }
 
 const POSTAL_DB: Record<string, [number, number]> = {
