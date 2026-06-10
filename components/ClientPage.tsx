@@ -209,7 +209,7 @@ export default function ClientPage({ events, updatedAt }: Props) {
         {(['gratuit', 'proche', 'avr', 'mai'] as FilterType[]).map(f => (
           <button key={f} className={`filter-pill${filter === f ? ' active' : ''}`}
             onClick={() => setFilter(f === filter ? 'all' : f)}>
-            {f === 'gratuit' ? '✦ Gratuits' : f === 'proche' ? '≤ 50 km' : f === 'avr' ? 'Avril' : 'Mai +'}
+            {f === 'mois' ? '📅 Ce mois-ci' : f === 'gratuit' ? '✦ Gratuits' : '≤ 50 km'}
           </button>
         ))}
 
