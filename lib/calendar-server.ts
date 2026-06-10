@@ -55,6 +55,18 @@ const COORDS_DB: Record<string, [number, number]> = {
   'honnelles': [50.342, 3.834], 'fayt-le-franc': [50.342, 3.834],
   'harchies': [50.481, 3.690],
   'bruxelles': [50.847, 4.353], 'brussel': [50.847, 4.353],
+  'engis': [50.582, 5.398],
+  'arlon': [49.683, 5.816],
+  'ittre': [50.643, 4.264],
+  'cerfontaine': [50.158, 4.413],
+  'beaumont': [50.236, 4.240],
+  'huy': [50.519, 5.239],
+  'amay': [50.546, 5.309],
+  'malmedy': [50.426, 6.028], 'bévercé': [50.448, 6.030], 'beverce': [50.448, 6.030],
+  'quiévrain': [50.405, 3.687], 'quievrain': [50.405, 3.687],
+  'franchimont': [50.197, 4.583],
+  'veulen': [50.770, 5.300], 'heers': [50.752, 5.297],
+  'attre': [50.585, 3.832],
 }
 
 // Codes postaux pour départager des homonymes que le nom seul ne distingue pas.
